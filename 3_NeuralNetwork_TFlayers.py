@@ -64,7 +64,6 @@ with tf.Session() as sess:
             batch_x, batch_y = [data[i]], np.array([labels[i]])[:, np.newaxis]
             # Run optimization op (backprop)
             sess.run(train_op, feed_dict={X: batch_x, Y: batch_y})
-
         print('Loss for episode {}: {}'.format(n,get_current_loss(loss_op,sess)))
 
     ## predictions of each layer:
