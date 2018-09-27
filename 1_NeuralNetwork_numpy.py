@@ -26,7 +26,6 @@ def get_current_loss():
 ## general parameters
 datasize = 1000     # length of dataset
 epochs = 5          # number of epochs for training
-# lr = .001            # learning rate
 
 ## data generation
 data = np.array([inputs[np.random.choice(range(4))] for i in range(datasize)])
