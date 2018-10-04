@@ -1,5 +1,5 @@
 # TensorFlow-comparison
-Comparison of how to implement an examplary feed-forward neural network (multi-layer perceptron) learning XOR in 
+Comparison of how to implement an exemplary feed-forward neural network (multi-layer perceptron) learning XOR in 
 
 * [raw NumPy](https://github.com/sgttwld/tensorflow-comparison/blob/master/1_NeuralNetwork_numpy.py), 
 * [raw TensorFlow](https://github.com/sgttwld/tensorflow-comparison/blob/master/2_NeuralNetwork_rawTF.py), 
