@@ -69,9 +69,7 @@ init = tf.global_variables_initializer()
 ## running the TF session
 with tf.Session() as sess:
     sess.run(init)
-
     for n in range(0,episodes):
-        
         sess.run(train_op, feed_dict={X:data, Y:labels})
         if n % 100 == 0:
             print('Loss for episode {}: {}'.format(n,obj.eval(session=sess,feed_dict={X:inputs, Y:outputs})))
