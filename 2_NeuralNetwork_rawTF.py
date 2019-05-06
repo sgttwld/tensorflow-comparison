@@ -18,28 +18,25 @@ def xor(w):
 inputs = np.array([[0,0],[0,1],[1,0],[1,1]])
 outputs = [[xor(d)] for d in inputs]
 
-## calculation of loss while learning (just for display)
-def get_current_loss(loss_op,session):
-    feed = [{X: [inputs[i]],Y: [outputs[i]]} for i in range(4)]
-    l = [loss_op.eval(feed_dict=feed[i],session=session) for i in range(4)]
-    return np.sum(l)/4.0
-
 ## general parameters
-datasize = 1000     # length of dataset
+datasize = 100      # length of dataset
 dim_X = 2           # dimension of inputs
 dim_Y = 1           # dimension of outputs
 dim_h = 2           # dimension of hidden layer
-epochs = 5          # number of epochs for training
+episodes = 5000     # number of episodes for training
+lr = .01            # learning rate    
 
 ## data generation
 data = np.array([inputs[np.random.choice(range(4))] for i in range(datasize)])
-labels = [xor(d) for d in data]
+labels = [[xor(d)] for d in data]
+
 
 ###### Neural Network ######
 
 ## Definition of tensor placeholders for the data and labels
 X = tf.placeholder("float", [None, dim_X])
 Y = tf.placeholder("float", [None, dim_Y])
+
 ## Definition of weights and biases as tensorflow variables
 weights = {
     'h': tf.Variable(tf.random_normal([dim_X, dim_h])),
@@ -49,15 +46,21 @@ biases = {
     'h': tf.Variable(tf.random_normal([dim_h])),
     'y': tf.Variable(tf.random_normal([dim_Y])),
     }
+
 ## hidden layer
 h = tf.tanh(tf.add(tf.matmul(X, weights['h']), biases['h']))
+
 ## output layer
 model = tf.tanh(tf.matmul(h, weights['y']) + biases['y'])
 
+## objective/loss
+obj = tf.reduce_mean((Y-model)**2)
+
 ## loss and optimizer
-loss_op = tf.losses.mean_squared_error(labels=Y,predictions=model)
-optimizer = tf.train.GradientDescentOptimizer(learning_rate=0.1)
-train_op = optimizer.minimize(loss_op)
+optimizer = tf.train.AdamOptimizer(learning_rate=lr,beta1=.9, beta2=.999,epsilon=1e-08,name='Adam')
+#optimizer = tf.train.GradientDescentOptimizer(learning_rate=lr)
+train_op = optimizer.minimize(obj)
+
 
 ###### Training ######
 
@@ -67,14 +70,12 @@ init = tf.global_variables_initializer()
 ## running the TF session
 with tf.Session() as sess:
     sess.run(init)
-    for n in range(0,epochs):
-        for i in range(0,len(data)):
-            # here, we use single datapoints as baches:
-            batch_x, batch_y = [data[i]], np.array([labels[i]])[:, np.newaxis]
-            # Run optimization op (backprop)
-            sess.run(train_op, feed_dict={X: batch_x, Y: batch_y})
 
-        print('Loss for episode {}: {}'.format(n,get_current_loss(loss_op,sess)))
+    for n in range(0,episodes):
+        
+        sess.run(train_op, feed_dict={X:data, Y:labels})
+        if n % 100 == 0:
+            print('Loss for episode {}: {}'.format(n,obj.eval(session=sess,feed_dict={X:inputs, Y:outputs})))
 
     ## predictions of each layer:
     print('x->y:\n {}'.format(sess.run(model, feed_dict={X: inputs})))
