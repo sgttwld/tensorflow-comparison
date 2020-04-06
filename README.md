@@ -7,4 +7,4 @@ Comparison of how to implement an exemplary feed-forward neural network (multi-l
 * [Keras](https://github.com/sgttwld/tensorflow-comparison/blob/master/4_NeuralNetwork_keras.py), 
 * [TFLearn](https://github.com/sgttwld/tensorflow-comparison/blob/master/5_NeuralNetwork_TFLearn.py).
 
-__Note__ The tensorflow implementations are using tensorflow 1, see [tensorflow-2-simple-examples](https://github.com/sgttwld/tensorflow-2-simple-examples) for tensorflow 2 examples.
+__Note:__ The tensorflow implementations are using tensorflow 1, see [tensorflow-2-simple-examples](https://github.com/sgttwld/tensorflow-2-simple-examples) for tensorflow 2 examples.
